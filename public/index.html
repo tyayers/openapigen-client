@@ -43,6 +43,7 @@
       </div>
 
       <div class="row" style="text-align: right;">
+        <a class="btn" onclick="saveSpec()" style="position: relative; top: 36px; margin-right: 5px;">Save</a>
         <a class="btn" onclick="copySpec()" style="position: relative; top: 36px;">Copy</a>
         <pre style="text-align: left;">
           <code id="spec-result">...</code>
@@ -297,6 +298,20 @@
         window.getSelection().addRange(range); 
         document.execCommand("copy");
         window.getSelection().removeAllRanges();
+      }
+
+      function saveSpec() {
+        const words = document.getElementById("specgen-url").value.split('/');
+        var name = words[words.length - 1];
+
+        var text = document.getElementById("spec-result").innerText,
+        blob = new Blob([text], { type: 'text/plain' }),
+        anchor = document.createElement('a');
+
+        anchor.download = name + "-api.yaml";
+        anchor.href = (window.webkitURL || window.URL).createObjectURL(blob);
+        anchor.dataset.downloadurl = ['text/plain', anchor.download, anchor.href].join(':');
+        anchor.click();
       }
     </script>
   </body>
