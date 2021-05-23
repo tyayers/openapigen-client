@@ -1,0 +1,303 @@
+<html>
+  <head>
+    <link href="https://fonts.googleapis.com/css?family=Nunito:300,400,700" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@ajusa/lit@latest/dist/lit.css" />
+    <title>OpenAPI Spec Generator</title>
+    <script async="" defer="" src="https://buttons.github.io/buttons.js"></script>
+
+    <meta charset="utf-8"> <!-- Important: rapi-doc uses utf8 charecters -->
+    <script type="module" src="https://unpkg.com/rapidoc/dist/rapidoc-min.js"></script>
+  
+  </head>
+  <body>
+    <a href="https://github.com/tyayers/openapigen-client" style="position: absolute; right: 0px; top: 0px;"><img loading="lazy" width="149" height="149" src="https://github.blog/wp-content/uploads/2008/12/forkme_right_orange_ff7600.png?resize=149%2C149" class="attachment-full size-full" alt="Fork me on GitHub" data-recalc-dims="1"></a>
+    <div class="c">
+      <h1>OpenAPI Spec Generator</h1>
+
+      <div class="row">
+        <h5>A simple tool to generate an OpenAPI spec based on a RESTful endpoint which follows the list
+          best practices defined at <a href="https://google.aip.dev/132">https://google.aip.dev/132</a>.</h5>
+        <h5>
+          Just enter your REST GET resource list endpoint to get started.
+        </h5>
+      </div>
+      
+      <div class="row">
+        <div class="6 col">
+            REST GET resource list endpoint:
+            <input id="specgen-url" class="card w-100" type="url" value="https://emea-poc13-test.apigee.net/business-objects-api/orders">
+        </div>
+        <div class="6 col">
+          OpenAPI Version
+          <select class="card w-100">
+              <option value="Option 1">3.0.3</option>
+          </select>
+        </div>
+      </div>
+      <div class="row">
+          <input type="checkbox">
+          I AM a robot
+          <hr>
+          <button onclick="generateSpec()" class="btn primary">Submit</button>
+          <button onclick="clearSpec()" style="margin-left: 5px" class="btn primary">Clear</button>
+      </div>
+
+      <div class="row" style="text-align: right;">
+        <a class="btn" onclick="copySpec()" style="position: relative; top: 36px;">Copy</a>
+        <pre style="text-align: left;">
+          <code id="spec-result">...</code>
+        </pre>
+      </div>
+
+      <div class="row">
+        <br>
+        <h4>Example</h4>
+        The list API at the endpoint <a href="https://emea-poc13-test.apigee.net/business-objects-api/orders">https://emea-poc13-test.apigee.net/business-objects-api/orders</a> 
+        returns a list of <b>"order"</b> objects.
+        <pre><code>
+          {
+            "orders": [
+              {
+                "SalesOrder": "9000000232",
+                "SalesOrderType": "ZOR",
+                ...
+              },
+              {
+                "SalesOrder": "9000000348",
+                "SalesOrderType": "OR",
+                ...
+              },
+              ...
+            ]
+          }
+        </code></pre>
+        <p>After submitting the URL in the form above, we get this basic OpenAPI spec generated, covering all 
+        of the REST basics.  This can be helpful to generate boilerplate specs for an endpoint, and which
+        can be updated with real documentation for the properties (of course, we would <i>never</i> just leave
+        the defaults below..)</p>
+        <pre><code>
+          openapi: 3.0.3
+          info:
+            description: API for managing Order resources.
+            version: 0.0.1
+            title: Orders API
+          servers:
+          - url: https://emea-poc13-test.apigee.net/business-objects-api
+          paths:
+            /orders:
+              get:
+                summary: List 'Order' objects.
+                description: Retrieve a page of 'Order' objects from the server.  Follows the
+                  standards for parameters from the [List AIP](  https://aip.dev/132).
+                parameters:
+                - name: pageSize
+                  in: query
+                  description: Max size of returned list.
+                  schema:
+                    type: integer
+                    default: "25"
+                - name: pageToken
+                  in: query
+                  description: A page token recieved from the previous list call. Provide this
+                    to retrieve the next page.
+                  schema:
+                    type: string
+                - name: orderBy
+                  in: query
+                  description: The ordering of the returned list. See the [List Ordering API](
+                    https://aip.dev/132) for details on the formatting of this field.
+                  schema:
+                    type: string
+                    default: displayName
+                - name: filter
+                  in: query
+                  description: Filter that will be used to select Order objects to return. See
+                    the [Filtering AIP](https://aip.dev/160) for usage and details on the filtering
+                    grammar.
+                  schema:
+                    type: string
+                responses:
+                  "200":
+                    description: Successful response
+                    content:
+                      application/json:
+                        schema:
+                          type: object
+                          properties:
+                            orders:
+                              type: array
+                              items:
+                                $ref: '#/components/schemas/ListOfOrders'
+              post:
+                summary: Creates a new Order
+                description: Creates a new Order
+                requestBody:
+                  description: The Order object to create.
+                  required: false
+                  content:
+                    application/json:
+                      schema:
+                        $ref: '#/components/schemas/Order'
+                responses:
+                  "201":
+                    description: Successful response
+                    content:
+                      application/json:
+                        schema:
+                          $ref: '#/components/schemas/Order'
+            /orders/{order}:
+              get:
+                summary: Retrieve a(n) Order object.
+                description: Retrieve a single Order object.
+                parameters:
+                - name: order
+                  in: path
+                  required: true
+                  description: Unique identifier of the desired Order object.
+                  schema:
+                    type: string
+                responses:
+                  "200":
+                    description: Successful response
+                    content:
+                      application/json:
+                        schema:
+                          $ref: '#/components/schemas/Order'
+                  "404":
+                    description: Order was not found.
+              put:
+                summary: Update a(n) Order object.
+                description: Update a single Order object.
+                parameters:
+                - name: order
+                  in: path
+                  required: true
+                  description: Unique identifier of the desired Order object.
+                  schema:
+                    type: string
+                requestBody:
+                  description: The Order object to update.
+                  required: false
+                  content:
+                    application/json:
+                      schema:
+                        $ref: '#/components/schemas/Order'
+                responses:
+                  "200":
+                    description: Successful response
+                    content:
+                      application/json:
+                        schema:
+                          $ref: '#/components/schemas/Order'
+                  "404":
+                    description: Order was not found.
+              delete:
+                summary: Delete a(n) Order object.
+                description: Delete a single Order object.
+                parameters:
+                - name: order
+                  in: path
+                  required: true
+                  description: Unique identifier of the desired Order object.
+                  schema:
+                    type: string
+                responses:
+                  "200":
+                    description: Successful response
+                  "404":
+                    description: Order was not found.
+          components:
+            schemas:
+              ListOfOrders:
+                title: List of Order objects
+                type: array
+                items:
+                  $ref: '#/components/schemas/Order'
+              Order:
+                title: Order
+                type: object
+                properties:
+                  CreatedByUser:
+                    description: The CreatedByUser of the Order
+                    type: string
+                    example: SERGEY
+                  CreationDate:
+                    description: The CreationDate of the Order
+                    type: string
+                    example: 3/18/2021
+                  DistributionChannel:
+                    description: The DistributionChannel of the Order
+                    type: number
+                    example: "01"
+                  OverallTotalDeliveryStatus:
+                    description: The OverallTotalDeliveryStatus of the Order
+                    type: string
+                    example: SCHEDULED
+                  PricingDate:
+                    description: The PricingDate of the Order
+                    type: string
+                    example: 3/18/2021
+                  RequestedDeliveryDate:
+                    description: The RequestedDeliveryDate of the Order
+                    type: string
+                    example: 6/10/2021
+                  SalesOrder:
+                    description: The SalesOrder of the Order
+                    type: number
+                    example: "9000000232"
+                  SalesOrderDate:
+                    description: The SalesOrderDate of the Order
+                    type: string
+                    example: 3/15/2021
+                  SalesOrderType:
+                    description: The SalesOrderType of the Order
+                    type: string
+                    example: ZOR
+                  SalesOrganization:
+                    description: The SalesOrganization of the Order
+                    type: number
+                    example: "2000"
+                  SoldToParty:
+                    description: The SoldToParty of the Order
+                    type: number
+                    example: "1004186"
+                  TotalNetAmount:
+                    description: The TotalNetAmount of the Order
+                    type: string
+                    example: "1356.08"
+                  TransactionCurrency:
+                    description: The TransactionCurrency of the Order
+                    type: string
+                    example: EUR
+        </code></pre>      
+      </div>
+
+    </div>
+   
+
+    <script>
+      function generateSpec() {
+        var url = document.getElementById("specgen-url").value;
+
+        fetch('https://openapigen-client-h7pi7igbcq-ew.a.run.app/openapi/spec?url=' + url)
+        .then(response => response.text())
+        .then(data => {
+          document.getElementById("spec-result").innerText = "\n" + data;
+        });
+      }
+
+      function clearSpec() {
+        document.getElementById("spec-result").innerText = "...";
+      }
+
+      function copySpec() {
+        var range = document.createRange();
+        range.selectNode(document.getElementById("spec-result")); //changed here
+        window.getSelection().removeAllRanges(); 
+        window.getSelection().addRange(range); 
+        document.execCommand("copy");
+        window.getSelection().removeAllRanges();
+      }
+    </script>
+  </body>
+</html>
