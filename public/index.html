@@ -38,7 +38,7 @@
           <input type="checkbox">
           I AM a robot
           <hr>
-          <button onclick="generateSpec()" class="btn primary">Submit</button>
+          <button onclick="generateSpec()" class="btn primary" id="submit-button">Submit</button>
           <button onclick="clearSpec()" style="margin-left: 5px" class="btn primary">Clear</button>
       </div>
 
@@ -279,11 +279,16 @@
     <script>
       function generateSpec() {
         var url = document.getElementById("specgen-url").value;
+        document.getElementById("submit-button").style.cursor = 'progress';
 
         fetch('https://openapigen-client-h7pi7igbcq-ew.a.run.app/openapi/spec?url=' + url)
         .then(response => response.text())
         .then(data => {
           document.getElementById("spec-result").innerText = "\n" + data;
+          document.getElementById("submit-button").style.cursor = 'default';
+        })
+        .catch((error) => {
+          document.getElementById("submit-button").style.cursor = 'default';
         });
       }
 
