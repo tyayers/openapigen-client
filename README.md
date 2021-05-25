@@ -1,10 +1,10 @@
 # openapigen-client
 This is a simple web client to generate OpenAPI specs from deployed REST endpoints.  The background of this project is that I had a lot of API proxies delivering large, unstructured payloads, and needed a way to automatically generate (and update specs) based on the returned data structures.  Usually OpenAPI tooling generates the specs from source code objects, but since this data is coming from test backend systems (SAP, etc..), I needed an inspector service to generate the specs based on live data.
 
+Currently the project is in a simple form (only handling flat resources), but could be easily expanded to more complex use-cases, if needed.
+
 ## Try it out
 You can use a deployed version of the client deployed on Firebase here: [https://openapigen.web.app/](https://openapigen.web.app/).
-
-This is a simple web client for the [OpenAPIGen](https://github.com/tyayers/openapigen) library to generate OpenAPI specs from REST endpoints.  Currently it is in a simple form (only handling flat resources), but could be easily expanded to more complex use-cases if needed.
 
 ![App preview](img/apppreview.gif)  
 
