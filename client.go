@@ -6,7 +6,7 @@ import (
 	"github.com/gin-contrib/cors"
 	"github.com/gin-contrib/static"
 	"github.com/gin-gonic/gin"
-	"github.com/tyayers/openapigen"
+	"github.com/tyayers/openapigen/openapigenlib"
 )
 
 func main() {
@@ -19,7 +19,7 @@ func main() {
 	r.GET("/openapi/spec", func(c *gin.Context) {
 		url := c.Query("url")
 		fmt.Println(url)
-		spec := openapigen.GenerateSpec(url)
+		spec := openapigenlib.GenerateSpec(url)
 
 		c.String(200, spec)
 	})
