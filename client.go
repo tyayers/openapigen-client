@@ -1,6 +1,7 @@
 package main
 
 import (
+	b64 "encoding/base64"
 	"fmt"
 
 	"github.com/gin-contrib/cors"
@@ -18,8 +19,9 @@ func main() {
 
 	r.GET("/openapi/spec", func(c *gin.Context) {
 		url := c.Query("url")
-		fmt.Println(url)
-		spec := openapigenlib.GenerateSpec(url)
+		decodedUrl, _ := b64.StdEncoding.DecodeString(url)
+		fmt.Println(string(decodedUrl))
+		spec := openapigenlib.GenerateSpec(string(decodedUrl))
 
 		c.String(200, spec)
 	})

@@ -67,6 +67,8 @@ github.com/tyayers/openapigen v1.2.0/go.mod h1:prp26OAyaGeJd+y3qnoz27tO80RMZ4jS0
 github.com/tyayers/openapigen v1.4.0 h1:5myWvmBID27R6mHjqLvFXgYyZZnIWDDkM+RG0XH02dY=
 github.com/tyayers/openapigen/openapigenlib v0.0.0-20210602044347-ea0ebae83dbe h1:bKjH2N4dzhnQ1phfskKJEUGH7nHoCryaEgD+HAjXpAY=
 github.com/tyayers/openapigen/openapigenlib v0.0.0-20210602044347-ea0ebae83dbe/go.mod h1:5AJ1sCYZZB37vc59sHhIynphpTAKXFnepcInB09gr0I=
+github.com/tyayers/openapigen/openapigenlib v0.0.0-20210708142810-83b07c1efd1c h1:9zNXPNNz4asVWizV24PAaMo4T1toncdyeiPJLPe4oDI=
+github.com/tyayers/openapigen/openapigenlib v0.0.0-20210708142810-83b07c1efd1c/go.mod h1:5AJ1sCYZZB37vc59sHhIynphpTAKXFnepcInB09gr0I=
 github.com/ugorji/go v1.1.7/go.mod h1:kZn38zHttfInRq0xu/PH0az30d+z6vm202qpg1oXVMw=
 github.com/ugorji/go v1.2.6 h1:tGiWC9HENWE2tqYycIqFTNorMmFRVhNwCpDOpWqnk8E=
 github.com/ugorji/go v1.2.6/go.mod h1:anCg0y61KIhDlPZmnH+so+RQbysYVyDko0IMgJv0Nn0=

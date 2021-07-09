@@ -3,6 +3,9 @@ This is a simple web client to generate OpenAPI specs from deployed REST endpoin
 
 Currently the project is in a simple form (only handling flat resources), but could be easily expanded to more complex use-cases, if needed.
 
+## API Security
+Currently the service only supports open API endpoints (so no authentication) or sending an API key in the URL (with the parameter ?apikey=KEY).  This will be expanded in the future to support OAuth Bearer tokens and other authentication methods.
+
 ## Try it out
 You can use a deployed version of the client deployed on Firebase here: [https://openapigen.web.app/](https://openapigen.web.app/).
 

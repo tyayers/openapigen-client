@@ -281,7 +281,9 @@
         var url = document.getElementById("specgen-url").value;
         document.getElementById("submit-button").style.cursor = 'progress';
 
-        fetch('https://openapigen-client-h7pi7igbcq-ew.a.run.app/openapi/spec?url=' + url)
+        //fetch('https://openapigen-client-h7pi7igbcq-ew.a.run.app/openapi/spec?url=' + url)
+        var encodedUrl = window.btoa(url);
+        fetch('/openapi/spec?url=' + encodedUrl)
         .then(response => response.text())
         .then(data => {
           document.getElementById("spec-result").innerText = "\n" + data;

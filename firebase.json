@@ -5,6 +5,11 @@
       "firebase.json",
       "**/.*",
       "**/node_modules/**"
-    ]
+    ],
+    "redirects": [ {
+      "source": "/openapi/spec",
+      "destination": "https://openapigen-client-h7pi7igbcq-ew.a.run.app/openapi/spec",
+      "type": 301
+    } ]
   }
 }
